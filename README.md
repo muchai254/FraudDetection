@@ -21,17 +21,19 @@ Upon plotting a histogram on the Amount column, we observe that it is heavily im
 This could really affect the models' performance, making them bias towards certain transaction amounts.
 To solve this, we shall rescale the data by applying log transformation so as to give the data a normal distribution and then applying Robust Scaling so as to set limits on the data. This is done as follows:
 
-
+```python
 import numpy as np
 data_df = df.copy()
 data_df['Amount'] = np.log(data_df['Amount'] + 1)
 data_df['Amount'].hist()
+
 from sklearn.preprocessing import RobustScaler
 new_df = data_df.copy()
 new_df['Amount'] = RobustScaler().fit_transform(new_df['Amount'].to_numpy().reshape(-1,1))
 time = new_df['Time']
 new_df['Time'] = (time - time.min()) / (time.max())
 new_df['Amount'].hist()
+```
 
 The results are as shown below:
 
